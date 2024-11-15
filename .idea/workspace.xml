@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36b1574a-6781-4f11-bf0a-2312e711e1ab" name="변경" comment="job fair, 부스 리스트 반환 추가">
-      <change beforePath="$PROJECT_DIR$/.idea/WishJob.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WishJob.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="36b1574a-6781-4f11-bf0a-2312e711e1ab" name="변경" comment="/api/myPage/:userId 완">
+      <change beforePath="$PROJECT_DIR$/jobfair/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/jobfair/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +52,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/jaehyuk/Desktop/projects/WishJob",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -186,7 +185,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731590859577</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="/api/myPage/:userId 완">
+      <option name="closed" value="true" />
+      <created>1731618588234</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1731618588235</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,6 +220,7 @@
     <MESSAGE value="스웨거 추가" />
     <MESSAGE value="users 성공" />
     <MESSAGE value="job fair, 부스 리스트 반환 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="job fair, 부스 리스트 반환 추가" />
+    <MESSAGE value="/api/myPage/:userId 완" />
+    <option name="LAST_COMMIT_MESSAGE" value="/api/myPage/:userId 완" />
   </component>
 </project>

@@ -23,6 +23,9 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from django.urls import path
+from config.views import CustomUserDetailView
+
 schema_view = get_schema_view(
    openapi.Info(
       title="WishJob API",
@@ -46,7 +49,13 @@ urlpatterns = [
 
     path('users/', include('users.urls')),
     path('jobfair/', include('jobfair.urls')),
+    path('myPage/', include('myPage.urls')),
+    path('company/', include('company.urls')),
+
     path('api-token-auth/', obtain_auth_token),
+
+    path('user/json/<str:email>/', CustomUserDetailView.as_view(), name='user_json'),
+
 ]
 
 
