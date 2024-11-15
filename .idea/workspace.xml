@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="36b1574a-6781-4f11-bf0a-2312e711e1ab" name="변경" comment="/api/myPage/:userId 완">
       <change beforePath="$PROJECT_DIR$/jobfair/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/jobfair/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myPage/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/myPage/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

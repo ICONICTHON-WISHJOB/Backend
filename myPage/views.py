@@ -9,14 +9,11 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from django.http import JsonResponse
-
-
-
-
+from rest_framework.permissions import IsAuthenticated
 
 
 class MyPageView(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, userId):
         # 사용자 정보 가져오기
@@ -83,7 +80,7 @@ class MyPageInterestView(APIView):
 
 
 class ReservationListView(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, userId, doneType=None):
         # userId로 사용자 가져오기
