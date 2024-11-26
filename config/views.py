@@ -6,7 +6,6 @@ from rest_framework import status
 from users.models import CustomUser
 from .serializers import CustomUserSerializer
 
-#json
 class CustomUserDetailView(APIView):
     def get(self, request, email):
         try:

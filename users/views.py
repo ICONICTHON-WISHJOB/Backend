@@ -17,39 +17,34 @@ class SignupView(APIView):
             return Response({"token": token.key}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class LoginView(APIView):
     @swagger_auto_schema(request_body=LoginRequestSerializer)
     def post(self, request):
         serializer = LoginRequestSerializer(data=request.data)
+
         if serializer.is_valid():
             user_id = serializer.validated_data['user_id']
             password = serializer.validated_data['password']
 
-            if user_id.endswith('@company.com'):
-                # Attempt to authenticate as Company
-                try:
-                    company = Company.objects.get(company_id=user_id)  # Assuming `email` is used as identifier
-                    if company.check_password(password):
-                        request.session['id'] = company.company_id
-                        return Response({
-                            "message": "Login successful",
-                            "company_id": company.company_id,
-                            "user_type": 1
-                        }, status=status.HTTP_200_OK)
-                except Company.DoesNotExist:
-                    pass
-            else:
-                # Attempt to authenticate as CustomUser with email
-                try:
-                    user = CustomUser.objects.get(email=user_id)
-                    if user.check_password(password):
-                        request.session['email'] = user_id
-                        return Response({
-                            "message": "Login successful",
-                            "user_id": user_id,
-                            "user_type": 0
-                        }, status=status.HTTP_200_OK)
-                except CustomUser.DoesNotExist:
-                    pass
+            is_company_user = user_id.endswith('@company.com')
 
+            try:
+                if is_company_user:
+                    user = Company.objects.get(company_id=user_id)
+                else:
+                    user = CustomUser.objects.get(email=user_id)
+
+                if user.check_password(password):
+                    request.session['email'] = user_id
+                    request.session['user_type'] = 1 if is_company_user else 0
+
+                    return Response({
+                        "message": "Login successful",
+                        "id": user_id,
+                        "user_type": 1 if is_company_user else 0
+                    }, status=status.HTTP_200_OK)
+
+            except (Company.DoesNotExist, CustomUser.DoesNotExist):
+                pass
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)

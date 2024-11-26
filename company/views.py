@@ -30,18 +30,15 @@ class WaitCountView(APIView):
         }
     )
     def get(self, request, id):
-        # Fetch the company with the given id
         try:
             company = Company.objects.get(id=id)
         except Company.DoesNotExist:
             return Response({"error": "Company not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Fetch the booth associated with the company
         booth = Booth.objects.filter(company=company).first()
         if not booth:
             return Response({"error": "Booth not found for the given company"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Count the queue for the booth
         wait_count = booth.queue.count()
         return Response({"waitCnt": wait_count}, status=status.HTTP_200_OK)
 
@@ -81,18 +78,15 @@ class WaitListView(APIView):
         }
     )
     def get(self, request, id):
-        # Fetch the company with the given id
         try:
             company = Company.objects.get(id=id)
         except Company.DoesNotExist:
             return Response({"error": "Company not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Fetch the booth associated with the company
         booth = Booth.objects.filter(company=company).first()
         if not booth:
             return Response({"error": "Booth not found for the given company"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Get all users in the booth queue
         users_in_queue = booth.queue.all()
         user_data = [
             {
@@ -203,23 +197,19 @@ class ConsultDeleteView(APIView):
             }
         )
         def post(self, request, id):
-            # Step 1: Retrieve the company_id from session
             company_id = request.session.get('id')
             if not company_id:
                 return Response({"error": "Company ID not found in session"}, status=status.HTTP_404_NOT_FOUND)
 
-            # Step 2: Find the company
             try:
                 company = Company.objects.get(company_id=company_id)
             except Company.DoesNotExist:
                 return Response({"error": "Invalid company_id"}, status=status.HTTP_404_NOT_FOUND)
 
-            # Step 3: Get the associated booth
             booth = company.booths.first()
             if not booth:
                 return Response({"error": "Booth not found for this company"}, status=status.HTTP_404_NOT_FOUND)
 
-            # Step 4: Find the user in the queue and remove them
             try:
                 user = booth.queue.get(id=id)
             except CustomUser.DoesNotExist:
@@ -233,19 +223,16 @@ class ConsultDeleteView(APIView):
 
 class CompletedConsultationsListView(APIView):
     def post(self, request):
-        # Step 1: Retrieve the company_id from the session
         company_id = request.session['id']
         print(request.session)
         if not company_id:
             return Response({"error": "Company ID not found in session"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Step 2: Find the company based on company_id
         try:
             company = Company.objects.get(company_id=company_id)
         except Company.DoesNotExist:
             return Response({"error": "Company not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Step 3: Retrieve all completed consultations (CustomUser) for the company
         completed_users = company.completed_consultations.all()
         users_data = [
             {

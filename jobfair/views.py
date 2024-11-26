@@ -1,12 +1,15 @@
+from users.models import Booth, BoothQueue
+from users.serializers import BoothSerializer
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from users.models import CustomUser, Company, Booth, BoothQueue
-from users.serializers import BoothSerializer
-from rest_framework.permissions import IsAuthenticated
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-from django.shortcuts import get_object_or_404
+from users.models import CustomUser
+import openai
+import os
 
 class ReserveBoothView(APIView):
     permission_classes = [IsAuthenticated]
@@ -18,11 +21,9 @@ class ReserveBoothView(APIView):
         except Booth.DoesNotExist:
             return Response({"error": "Booth not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Check if the user is already in the queue
         if BoothQueue.objects.filter(booth=booth, user=user).exists():
             return Response({"message": "Already in the queue"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Add user to the queue
         position = BoothQueue.objects.filter(booth=booth).count() + 1
         BoothQueue.objects.create(booth=booth, user=user, position=position)
 
@@ -49,7 +50,7 @@ class BoothListView(APIView):
 
 
 class BoothApplyView(APIView):
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         request_body=openapi.Schema(
@@ -71,12 +72,10 @@ class BoothApplyView(APIView):
     )
 
     def post(self, request):
-        user_id = request.data.get('user_id')  # unique ID for the user
+        user_id = request.data.get('user_id')
         booth_id = request.data.get('booth_id')
 
-        # Fetch the user by ID
         user = get_object_or_404(CustomUser, id=user_id)
-        # Fetch the booth by ID
         booth = get_object_or_404(Booth, booth_id=booth_id)
 
         booth.queue.add(user)
@@ -86,8 +85,8 @@ class BoothApplyView(APIView):
         new_reservation = {
             "boothid": booth.booth_id,
             "boothName": booth.boothName,
-            "doneType": 0,  # 0: 예정
-            "position_in_queue": booth.queue.count()  # 현재 대기 순서
+            "doneType": 0,
+            "position_in_queue": booth.queue.count()
         }
 
         if user.reservation_status is None:
@@ -103,12 +102,10 @@ class BoothApplyView(APIView):
 
 class BoothPossibleNowView(APIView):
     def get(self, request):
-        # Filter booths where wait_time is less than 10
         booths = Booth.objects.filter(wait_time__lt=10)
         for i in booths:
             print(i)
 
-        # Format the response as requested
         booth_data = [
             {
                 "boothId": booth.booth_id,
@@ -126,28 +123,9 @@ class BoothPossibleNowView(APIView):
 
         return Response(response_data, status=status.HTTP_200_OK)
 
-import openai
-import os
-from django.http import JsonResponse
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from users.models import CustomUser
 
 openai.api_key=os.getenv('GPT_KEY')
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from users.models import CustomUser
-import openai
 
 class RecommendView(APIView):
     @swagger_auto_schema(
