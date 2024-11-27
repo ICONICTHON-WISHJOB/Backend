@@ -4,7 +4,7 @@
 - myPage  : 내 정보 관련 페이지
 - users   : 회원가입, 로그인 관련 페이지
 
-# 테스트 계정
+## 테스트 계정
 - id : test@example.com, pwd: testpwd
 - id : A12@company.com,  pwd: 1234
 
